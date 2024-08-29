@@ -234,6 +234,21 @@
 }
 
 
+.hoverzoom_nofade_light {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.hoverzoom_nofade_light:hover {
+  transform: scale(1.1);
+}
+
+.hoverzoom_nofade_light:active {
+  transform: scale(1.1);
+  filter: saturate(180%);
+}
+
+
 
 .hoverzoom_nofade {
   cursor: pointer;
