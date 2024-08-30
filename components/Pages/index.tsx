@@ -17,6 +17,15 @@ const Page: PageEl = (props, state, refresh, getProps) => {
   let styles = global.styles
   let total_price = 0
   let benefit = 0
+
+  getProps(async ()=>{
+    let cart=localStorage.getItem("cart")
+    if(cart)
+    {
+      state.cart=JSON.parse(cart)
+    }
+  })
+
   if (!state.cart) {
     state.cart = []
   }
@@ -102,12 +111,14 @@ const Page: PageEl = (props, state, refresh, getProps) => {
             onClick={() => {
               if (state.cart.includes(state.book.title)) {
                 state.cart = state.cart.filter(bookname => state.book.title != bookname)
+                localStorage.setItem("cart",JSON.stringify(state.cart))
                 state.form = null
                 refresh()
                 alert(" کتاب" + " " + state.book.title + " " + " از سبد خرید شما حذف گردید")
               }
               else {
                 state.cart.push(state.book.title)
+                localStorage.setItem("cart",JSON.stringify(state.cart))
                 state.form = null
                 refresh()
               }
