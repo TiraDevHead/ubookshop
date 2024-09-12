@@ -18,16 +18,10 @@ const Page: PageEl = (props, state, refresh, getProps) => {
   let total_price = 0
   let benefit = 0
 
-  getProps(async ()=>{
-    let cart=localStorage.getItem("cart")
-    if(cart)
-    {
-      state.cart=JSON.parse(cart)
-    }
-  })
+  
 
   if (!state.cart) {
-    state.cart = []
+    state.cart = props.cart.map(o => o.title)
   }
   for (let title of state.cart) {
     let book = props.books.find(b => b.title == title)
@@ -108,20 +102,19 @@ const Page: PageEl = (props, state, refresh, getProps) => {
               "#FA3636D8" : "#29E454A6", color: "#080808",
             borderRadius: "10px"
           }}
-            onClick={() => {
+            onClick={async() => {
               if (state.cart.includes(state.book.title)) {
-                state.cart = state.cart.filter(bookname => state.book.title != bookname)
-                localStorage.setItem("cart",JSON.stringify(state.cart))
+                state.cart = state.cart.filter(bookname => state.book.title != bookname)            
                 state.form = null
                 refresh()
                 alert(" کتاب" + " " + state.book.title + " " + " از سبد خرید شما حذف گردید")
               }
               else {
                 state.cart.push(state.book.title)
-                localStorage.setItem("cart",JSON.stringify(state.cart))
                 state.form = null
                 refresh()
               }
+              await api("/api/cart",state.cart)
             }}>
             {state.cart.includes(state.book.title) ?
               <f-13>حذف از سبد خرید</f-13> : <f-13>افزودن به سبد خرید</f-13>
@@ -154,16 +147,19 @@ export async function getServerSideProps(context) {
     role, path, devmod, userip, } = session;
 
   let books = await global.db.collection("books").find({}).toArray()
+  let cart = await global.db.collection("cart").find({}).toArray()
   for (let book of books) {
-    book.imagelink = "https://irmapserver.ir/research/ex/books/" + book.imageLink
+    book.imagelink = "https://cdn.ituring.ir/research/ex/books/" + book.imageLink
   }
   console.log(books)
+  console.log(cart)
 
   return {
     props: {
       data: global.QSON.stringify({
         session,
         books,
+        cart
         // nlangs,
       })
     },

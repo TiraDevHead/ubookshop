@@ -32,9 +32,9 @@ export const Block = props => {
 
             <div>
                 {props.state.cart.includes(props.book.title) ?
-                    <img src="https://irmapserver.ir/research/6/tik.png"
+                    <img src="https://cdn.ituring.ir/research/6/tik.png"
                         style={{ height: 55, objectFit: "contain", position: "absolute", bottom: -2, right: -5 }} /> :
-                    <img src="https://irmapserver.ir/research/6/buy.png"
+                    <img src="https://cdn.ituring.ir/research/6/buy.png"
                         style={{ height: 30, width: 30, objectFit: "contain", position: "absolute", bottom: 10, right: 10 }} />}
             </div>
 
